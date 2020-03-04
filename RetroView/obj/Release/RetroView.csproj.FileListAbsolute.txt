@@ -1,0 +1,9 @@
+C:\Users\dougf\source\repos\RetroView\RetroView\bin\Release\RetroView.exe.config
+C:\Users\dougf\source\repos\RetroView\RetroView\bin\Release\RetroView.exe
+C:\Users\dougf\source\repos\RetroView\RetroView\bin\Release\RetroView.pdb
+C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.csprojAssemblyReference.cache
+C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.Form1.resources
+C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.Properties.Resources.resources
+C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.csproj.GenerateResource.cache
+C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.exe
+C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.pdb
