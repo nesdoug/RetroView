@@ -860,7 +860,8 @@ namespace RetroView
                 // save file
                 // export image pic of the current view
                 SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "Images|*.png;*.bmp;*.jpg;*.gif";
+                //sfd.Filter = "Images|*.png;*.bmp;*.jpg;*.gif";
+                sfd.Filter = "PNG|*.png|BMP|*.bmp|JPG|*.jpg|GIF|*.gif";
                 //ImageFormatConverter format = ImageFormatConverter.StandardValuesCollection;
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
