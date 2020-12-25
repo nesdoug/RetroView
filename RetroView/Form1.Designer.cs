@@ -40,13 +40,20 @@
             this.bitRGBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zXSpectrumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gameboyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.segaMasterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nESToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.segaMasterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.segaGenesisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gameGearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sNESToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sNESDirectColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sepiaToneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.artSketchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.prettyInPinkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ditherStyleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.floydSteinbergToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderedBayer8x8ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.levelsChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
@@ -77,21 +84,22 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
             this.textBox19 = new System.Windows.Forms.TextBox();
             this.textBox20 = new System.Windows.Forms.TextBox();
             this.textBox21 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBox22 = new System.Windows.Forms.TextBox();
+            this.textBox23 = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.gameboyColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -102,6 +110,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.presetsToolStripMenuItem,
+            this.ditherStyleToolStripMenuItem,
             this.infoToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -153,8 +162,12 @@
             this.segaMasterToolStripMenuItem,
             this.segaGenesisToolStripMenuItem,
             this.gameGearToolStripMenuItem,
+            this.gameboyColorToolStripMenuItem,
             this.sNESToolStripMenuItem,
-            this.sNESDirectColorToolStripMenuItem});
+            this.sNESDirectColorToolStripMenuItem,
+            this.sepiaToneToolStripMenuItem,
+            this.artSketchToolStripMenuItem,
+            this.prettyInPinkToolStripMenuItem});
             this.presetsToolStripMenuItem.Name = "presetsToolStripMenuItem";
             this.presetsToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.presetsToolStripMenuItem.Text = "Presets";
@@ -184,7 +197,7 @@
             // 
             this.bitRGBToolStripMenuItem.Name = "bitRGBToolStripMenuItem";
             this.bitRGBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.bitRGBToolStripMenuItem.Text = "1 bit per color RGB";
+            this.bitRGBToolStripMenuItem.Text = "1 bit RGB";
             this.bitRGBToolStripMenuItem.Click += new System.EventHandler(this.bitRGBToolStripMenuItem_Click);
             // 
             // zXSpectrumToolStripMenuItem
@@ -201,19 +214,19 @@
             this.gameboyToolStripMenuItem.Text = "Gameboy";
             this.gameboyToolStripMenuItem.Click += new System.EventHandler(this.gameboyToolStripMenuItem_Click);
             // 
-            // segaMasterToolStripMenuItem
-            // 
-            this.segaMasterToolStripMenuItem.Name = "segaMasterToolStripMenuItem";
-            this.segaMasterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.segaMasterToolStripMenuItem.Text = "Sega Master System";
-            this.segaMasterToolStripMenuItem.Click += new System.EventHandler(this.segaMasterToolStripMenuItem_Click);
-            // 
             // nESToolStripMenuItem
             // 
             this.nESToolStripMenuItem.Name = "nESToolStripMenuItem";
             this.nESToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nESToolStripMenuItem.Text = "NES";
             this.nESToolStripMenuItem.Click += new System.EventHandler(this.nESToolStripMenuItem_Click);
+            // 
+            // segaMasterToolStripMenuItem
+            // 
+            this.segaMasterToolStripMenuItem.Name = "segaMasterToolStripMenuItem";
+            this.segaMasterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.segaMasterToolStripMenuItem.Text = "Sega Master System";
+            this.segaMasterToolStripMenuItem.Click += new System.EventHandler(this.segaMasterToolStripMenuItem_Click);
             // 
             // segaGenesisToolStripMenuItem
             // 
@@ -233,7 +246,7 @@
             // 
             this.sNESToolStripMenuItem.Name = "sNESToolStripMenuItem";
             this.sNESToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.sNESToolStripMenuItem.Text = "SNES / GBA";
+            this.sNESToolStripMenuItem.Text = "SNES";
             this.sNESToolStripMenuItem.Click += new System.EventHandler(this.sNESToolStripMenuItem_Click);
             // 
             // sNESDirectColorToolStripMenuItem
@@ -243,18 +256,72 @@
             this.sNESDirectColorToolStripMenuItem.Text = "SNES Direct Color";
             this.sNESDirectColorToolStripMenuItem.Click += new System.EventHandler(this.sNESDirectColorToolStripMenuItem_Click);
             // 
+            // sepiaToneToolStripMenuItem
+            // 
+            this.sepiaToneToolStripMenuItem.Name = "sepiaToneToolStripMenuItem";
+            this.sepiaToneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sepiaToneToolStripMenuItem.Text = "Sepia Tone";
+            this.sepiaToneToolStripMenuItem.Click += new System.EventHandler(this.sepiaToneToolStripMenuItem_Click);
+            // 
+            // artSketchToolStripMenuItem
+            // 
+            this.artSketchToolStripMenuItem.Name = "artSketchToolStripMenuItem";
+            this.artSketchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.artSketchToolStripMenuItem.Text = "Art Sketch";
+            this.artSketchToolStripMenuItem.Click += new System.EventHandler(this.artSketchToolStripMenuItem_Click);
+            // 
+            // prettyInPinkToolStripMenuItem
+            // 
+            this.prettyInPinkToolStripMenuItem.Name = "prettyInPinkToolStripMenuItem";
+            this.prettyInPinkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.prettyInPinkToolStripMenuItem.Text = "Pretty In Pink";
+            this.prettyInPinkToolStripMenuItem.Click += new System.EventHandler(this.prettyInPinkToolStripMenuItem_Click);
+            // 
+            // ditherStyleToolStripMenuItem
+            // 
+            this.ditherStyleToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.floydSteinbergToolStripMenuItem,
+            this.orderedBayer8x8ToolStripMenuItem});
+            this.ditherStyleToolStripMenuItem.Name = "ditherStyleToolStripMenuItem";
+            this.ditherStyleToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.ditherStyleToolStripMenuItem.Text = "Dither Style";
+            // 
+            // floydSteinbergToolStripMenuItem
+            // 
+            this.floydSteinbergToolStripMenuItem.Checked = true;
+            this.floydSteinbergToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.floydSteinbergToolStripMenuItem.Name = "floydSteinbergToolStripMenuItem";
+            this.floydSteinbergToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.floydSteinbergToolStripMenuItem.Text = "Floyd-Steinberg";
+            this.floydSteinbergToolStripMenuItem.Click += new System.EventHandler(this.floydSteinbergToolStripMenuItem_Click);
+            // 
+            // orderedBayer8x8ToolStripMenuItem
+            // 
+            this.orderedBayer8x8ToolStripMenuItem.Name = "orderedBayer8x8ToolStripMenuItem";
+            this.orderedBayer8x8ToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.orderedBayer8x8ToolStripMenuItem.Text = "Ordered Bayer8x8";
+            this.orderedBayer8x8ToolStripMenuItem.Click += new System.EventHandler(this.orderedBayer8x8ToolStripMenuItem_Click);
+            // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.levelsChartToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
             this.infoToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
             this.infoToolStripMenuItem.Text = "Info";
             // 
+            // levelsChartToolStripMenuItem
+            // 
+            this.levelsChartToolStripMenuItem.Name = "levelsChartToolStripMenuItem";
+            this.levelsChartToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.levelsChartToolStripMenuItem.Text = "Levels Chart";
+            this.levelsChartToolStripMenuItem.Click += new System.EventHandler(this.levelsChartToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click_1);
             // 
@@ -264,7 +331,7 @@
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(10, 232);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(258, 242);
+            this.pictureBox1.Size = new System.Drawing.Size(257, 241);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
@@ -274,7 +341,7 @@
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox2.Location = new System.Drawing.Point(279, 232);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(258, 242);
+            this.pictureBox2.Size = new System.Drawing.Size(257, 241);
             this.pictureBox2.TabIndex = 2;
             this.pictureBox2.TabStop = false;
             // 
@@ -558,69 +625,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(445, 50);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(76, 13);
-            this.label9.TabIndex = 30;
-            this.label9.Text = "1 = always min";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(445, 70);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(45, 13);
-            this.label10.TabIndex = 31;
-            this.label10.Text = "2 = 1 bit";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(445, 90);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(45, 13);
-            this.label11.TabIndex = 32;
-            this.label11.Text = "4 = 2 bit";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(445, 110);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(45, 13);
-            this.label12.TabIndex = 33;
-            this.label12.Text = "8 = 3 bit";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(445, 130);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(51, 13);
-            this.label13.TabIndex = 34;
-            this.label13.Text = "16 = 4 bit";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(445, 150);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(51, 13);
-            this.label14.TabIndex = 35;
-            this.label14.Text = "32 = 5 bit";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(446, 33);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(66, 13);
-            this.label15.TabIndex = 36;
-            this.label15.Text = "Levels Chart";
-            // 
             // textBox19
             // 
             this.textBox19.Location = new System.Drawing.Point(92, 33);
@@ -634,8 +638,8 @@
             // 
             // textBox20
             // 
-            this.textBox20.Location = new System.Drawing.Point(238, 33);
-            this.textBox20.MaxLength = 3;
+            this.textBox20.Location = new System.Drawing.Point(227, 33);
+            this.textBox20.MaxLength = 4;
             this.textBox20.Name = "textBox20";
             this.textBox20.Size = new System.Drawing.Size(50, 20);
             this.textBox20.TabIndex = 38;
@@ -666,11 +670,11 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(152, 36);
+            this.label17.Location = new System.Drawing.Point(160, 36);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(76, 13);
+            this.label17.Size = new System.Drawing.Size(46, 13);
             this.label17.TabIndex = 41;
-            this.label17.Text = "Contrast 0-100";
+            this.label17.Text = "Contrast";
             // 
             // label18
             // 
@@ -681,15 +685,6 @@
             this.label18.TabIndex = 42;
             this.label18.Text = "Dither 0-12";
             // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(446, 170);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(51, 13);
-            this.label19.TabIndex = 43;
-            this.label19.Text = "64 = 6 bit";
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -699,11 +694,107 @@
             this.label20.TabIndex = 44;
             this.label20.Text = "-250 to 250";
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(451, 60);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(62, 13);
+            this.label19.TabIndex = 43;
+            this.label19.Text = "Output Size";
+            // 
+            // textBox22
+            // 
+            this.textBox22.Location = new System.Drawing.Point(459, 76);
+            this.textBox22.MaxLength = 3;
+            this.textBox22.Name = "textBox22";
+            this.textBox22.Size = new System.Drawing.Size(50, 20);
+            this.textBox22.TabIndex = 45;
+            this.textBox22.Text = "256";
+            this.textBox22.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox22_KeyPress);
+            this.textBox22.Leave += new System.EventHandler(this.textBox22_Leave);
+            // 
+            // textBox23
+            // 
+            this.textBox23.Location = new System.Drawing.Point(459, 102);
+            this.textBox23.MaxLength = 3;
+            this.textBox23.Name = "textBox23";
+            this.textBox23.Size = new System.Drawing.Size(50, 20);
+            this.textBox23.TabIndex = 46;
+            this.textBox23.Text = "240";
+            this.textBox23.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox23_KeyPress);
+            this.textBox23.Leave += new System.EventHandler(this.textBox23_Leave);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(441, 79);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(12, 13);
+            this.label9.TabIndex = 47;
+            this.label9.Text = "x";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(441, 105);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(12, 13);
+            this.label10.TabIndex = 48;
+            this.label10.Text = "y";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(160, 50);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(61, 13);
+            this.label11.TabIndex = 49;
+            this.label11.Text = "-100 to 100";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "4",
+            "8",
+            "16"});
+            this.comboBox1.Location = new System.Drawing.Point(454, 157);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(55, 21);
+            this.comboBox1.TabIndex = 50;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(451, 135);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(34, 13);
+            this.label12.TabIndex = 51;
+            this.label12.Text = "Zoom";
+            // 
+            // gameboyColorToolStripMenuItem
+            // 
+            this.gameboyColorToolStripMenuItem.Name = "gameboyColorToolStripMenuItem";
+            this.gameboyColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gameboyColorToolStripMenuItem.Text = "Gameboy Color";
+            this.gameboyColorToolStripMenuItem.Click += new System.EventHandler(this.gameboyColorToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(549, 486);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.textBox23);
+            this.Controls.Add(this.textBox22);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.label18);
@@ -712,13 +803,6 @@
             this.Controls.Add(this.textBox21);
             this.Controls.Add(this.textBox20);
             this.Controls.Add(this.textBox19);
-            this.Controls.Add(this.label15);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label9);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
@@ -806,13 +890,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem bitBWToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem zXSpectrumToolStripMenuItem;
@@ -826,8 +903,23 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ToolStripMenuItem ditherStyleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem floydSteinbergToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem orderedBayer8x8ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem levelsChartToolStripMenuItem;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox textBox22;
+        private System.Windows.Forms.TextBox textBox23;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ToolStripMenuItem sepiaToneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem artSketchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem prettyInPinkToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gameboyColorToolStripMenuItem;
     }
 }
 

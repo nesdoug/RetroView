@@ -21,16 +21,35 @@ namespace RetroView
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            comboBox1.SelectedIndex = 0;
         }
 
         // image size constants
         public const int MAX_WIDTH = 256;
         public const int MAX_HEIGHT = 240;
+        public const int FLOYD_STEIN = 0;
+        public const int BAYER8 = 1;
+        public readonly int[,] BAYER_MATRIX = 
+        {
+            { 0,48,12,60,3,51,15,63 },
+            { 32,16,44,28,35,19,47,31 },
+            { 8,56,4,52,11,59,7,55 },
+            { 40,24,36,20,43,27,39,23 },
+            { 2,50,14,62,1,49,13,61 },
+            { 34,18,46,30,33,17,45,29 },
+            { 10,58,6,54,9,57,5,53 },
+            { 42,26,38,22,41,25,37,21 }
+        }; // 1/64 times this
+        public const int BAYER_MULT = 64;
 
         // globals
+        public static int dither_style = 0;
         public static Bitmap left_pic = new Bitmap(MAX_WIDTH, MAX_HEIGHT);
+        public static Bitmap hidden_pic = new Bitmap(MAX_WIDTH, MAX_HEIGHT); // left pic resized
         public static Bitmap right_pic = new Bitmap(MAX_WIDTH, MAX_HEIGHT);
+        public static Bitmap zoom_left_pic = new Bitmap(MAX_WIDTH, MAX_HEIGHT); // zoomed in
+        public static Bitmap zoom_right_pic = new Bitmap(MAX_WIDTH, MAX_HEIGHT); // zoomed in
+        public static Bitmap dont_crash_pic = new Bitmap(MAX_WIDTH, MAX_HEIGHT); // fix crash
         public static int[,] dither_array = new int[MAX_WIDTH, MAX_HEIGHT];
         public static int[,] dither_array2 = new int[MAX_WIDTH, MAX_HEIGHT];
         public static int[,] dither_array3 = new int[MAX_WIDTH, MAX_HEIGHT];
@@ -42,6 +61,8 @@ namespace RetroView
         public static int max_r = 255, max_g = 255, max_b = 255;
         public static int orig_width, orig_height;
         public static int brightness = 0, contrast = 0, dither = 6;
+        public static int out_size_x = 256, out_size_y = 240;
+        public static int zoom_factor = 1;
 
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -90,7 +111,7 @@ namespace RetroView
 
         private void textBox2_Leave(object sender, EventArgs e)
         {
-            //textBox2.Text = sat_lev.ToString();
+            
             tb2_set();
         }
 
@@ -125,7 +146,7 @@ namespace RetroView
 
         private void textBox3_Leave(object sender, EventArgs e)
         {
-            //textBox3.Text = light_lev.ToString();
+            
             tb3_set();
         }
 
@@ -160,7 +181,7 @@ namespace RetroView
 
         private void textBox4_Leave(object sender, EventArgs e)
         {
-            //textBox4.Text = red_lev.ToString();
+            
             tb4_set();
         }
 
@@ -195,7 +216,7 @@ namespace RetroView
 
         private void textBox5_Leave(object sender, EventArgs e)
         {
-            //textBox5.Text = green_lev.ToString();
+            
             tb5_set();
         }
 
@@ -230,7 +251,7 @@ namespace RetroView
 
         private void textBox6_Leave(object sender, EventArgs e)
         {
-            //textBox6.Text = blue_lev.ToString();
+            
             tb6_set();
         }
 
@@ -265,7 +286,7 @@ namespace RetroView
 
         private void textBox7_Leave(object sender, EventArgs e)
         {
-            //textBox7.Text = min_hue.ToString();
+            
             tb7_set();
         }
 
@@ -304,7 +325,7 @@ namespace RetroView
 
         private void textBox8_Leave(object sender, EventArgs e)
         {
-            //textBox8.Text = min_sat.ToString();
+            
             tb8_set();
         }
 
@@ -345,7 +366,7 @@ namespace RetroView
 
         private void textBox9_Leave(object sender, EventArgs e)
         {
-            //textBox9.Text = min_light.ToString();
+            
             tb9_set();
         }
 
@@ -385,7 +406,7 @@ namespace RetroView
 
         private void textBox10_Leave(object sender, EventArgs e)
         {
-            //textBox10.Text = min_r.ToString();
+            
             tb10_set();
         }
 
@@ -426,7 +447,7 @@ namespace RetroView
 
         private void textBox11_Leave(object sender, EventArgs e)
         {
-            //textBox11.Text = min_g.ToString();
+            
             tb11_set();
         }
 
@@ -466,7 +487,7 @@ namespace RetroView
 
         private void textBox12_Leave(object sender, EventArgs e)
         {
-            //textBox12.Text = min_b.ToString();
+            
             tb12_set();
         }
 
@@ -506,7 +527,7 @@ namespace RetroView
 
         private void textBox13_Leave(object sender, EventArgs e)
         {
-            //textBox13.Text = max_hue.ToString();
+            
             tb13_set();
         }
 
@@ -547,7 +568,7 @@ namespace RetroView
 
         private void textBox14_Leave(object sender, EventArgs e)
         {
-            //textBox14.Text = max_sat.ToString();
+            
             tb14_set();
         }
 
@@ -588,7 +609,7 @@ namespace RetroView
 
         private void textBox15_Leave(object sender, EventArgs e)
         {
-            //textBox15.Text = max_light.ToString();
+            
             tb15_set();
         }
 
@@ -630,7 +651,7 @@ namespace RetroView
         
         private void textBox16_Leave(object sender, EventArgs e)
         {
-            //textBox16.Text = max_r.ToString();
+            
             tb16_set();
         }
 
@@ -671,7 +692,7 @@ namespace RetroView
 
         private void textBox17_Leave(object sender, EventArgs e)
         {
-            //textBox17.Text = max_g.ToString();
+            
             tb17_set();
         }
 
@@ -712,7 +733,7 @@ namespace RetroView
 
         private void textBox18_Leave(object sender, EventArgs e)
         {
-            //textBox18.Text = max_b.ToString();
+            
             tb18_set();
         }
 
@@ -749,20 +770,66 @@ namespace RetroView
 
 
         private void button1_Click(object sender, EventArgs e)
-        { // convert the left pic to right pic
+        { // Process Button = convert the left pic to right pic
             if(has_loaded == 1)
             {
                 has_processed = 1;
 
-                //convert image left_pic --> right_pic
+                //resize left --> hidden pic
+                resize_image();
+
+                //convert image hidden pic --> right_pic
                 convert_image();
 
-                //right_pic = left_pic;
-                pictureBox2.Image = right_pic;
-                pictureBox2.Refresh();
 
+                //zoom it and draw to right side
+                do_zoom();
             }
         }
+
+
+        public void resize_image()
+        {
+            // blank the hidden
+            for (int xx = 0; xx < MAX_WIDTH; xx++)
+            {
+                for (int yy = 0; yy < MAX_HEIGHT; yy++)
+                {
+                    hidden_pic.SetPixel(xx, yy, Color.Gray);
+                }
+            }
+
+            Rectangle cloneRect = new Rectangle(0, 0, orig_width, orig_height);
+            System.Drawing.Imaging.PixelFormat format = left_pic.PixelFormat;
+            Bitmap cloneBMP = left_pic.Clone(cloneRect, format);
+
+            int resize_width = orig_width;
+            int resize_height = orig_height;
+            if (out_size_x < orig_width)
+            {
+                resize_width = out_size_x;
+            }
+            if (out_size_y < orig_height)
+            {
+                resize_height = out_size_y;
+            }
+            
+            //double check max and min, error proof it.
+            if (resize_width < 1) resize_width = 1;
+            if (resize_width > MAX_WIDTH) resize_width = MAX_WIDTH;
+            if (resize_height < 1) resize_height = 1;
+            if (resize_height > MAX_HEIGHT) resize_height = MAX_HEIGHT;
+
+            // resize to fit output size
+            using (Graphics g2 = Graphics.FromImage(hidden_pic))
+            {
+                g2.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g2.DrawImage(cloneBMP, 0, 0, resize_width, resize_height);
+            }
+
+            // hidden pic now has the resized image
+        }
+
 
         private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
         { // load a new image to left box
@@ -776,47 +843,52 @@ namespace RetroView
                 dlg.Filter = "Image Files .png .jpg .bmp .gif)|*.png;*.jpg;*.bmp;*.gif|"+"All Files (*.*)|*.*";
 
 
-                //"png files (*.png)|*.png|bmp files (*.bmp)|*.bmp|jpg files (*.jpg)|*.jpg";
-
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    // blank the left
-                    for(int xx = 0; xx < MAX_WIDTH; xx++)
+                    zoom_factor = 1;
+                    comboBox1.SelectedIndex = 0;
+
+                    // blank the left and right
+                    for (int xx = 0; xx < MAX_WIDTH; xx++)
                     {
                         for (int yy = 0; yy < MAX_HEIGHT; yy++)
                         {
                             left_pic.SetPixel(xx, yy, Color.Gray);
+                            dont_crash_pic.SetPixel(xx, yy, Color.Gray);
                         }
                     }
+                    pictureBox2.Image = dont_crash_pic;
                     
                     Bitmap temp_bmp = new Bitmap(dlg.FileName);
 
 
                     int resize_width = MAX_WIDTH;
                     int resize_height = MAX_HEIGHT;
-                    if(temp_bmp.Width < MAX_WIDTH)
-                    {
-                        resize_width = temp_bmp.Width;
-                    }
-                    if (temp_bmp.Height < MAX_HEIGHT)
-                    {
-                        resize_height = temp_bmp.Height;
-                    }
-                    // keep size ratio of original file
-                    float wid = (float)temp_bmp.Width;
-                    float hit = (float)temp_bmp.Height;
-                    float ratio = (float)((MAX_HEIGHT*wid) / (MAX_WIDTH * hit));
+                    
 
-                    if (ratio >= 1.0)
-                    { //wider than tall, shrink height
-                        hit = (float)resize_height / ratio;
-                        resize_height = (int)hit;
+                    float ratio1 = 1.0F;
+                    float ratio2 = 1.0F;
+
+                    if(temp_bmp.Width > MAX_WIDTH)
+                    {
+                        ratio1 = temp_bmp.Width / (float)MAX_WIDTH;
+                    }
+                    if(temp_bmp.Height > MAX_HEIGHT)
+                    {
+                        ratio2 = temp_bmp.Height / (float)MAX_HEIGHT;
+                    }
+                    // which is bigger? divide by that
+                    if(ratio1 > ratio2)
+                    {
+                        resize_width = (int)Math.Round(temp_bmp.Width / ratio1);
+                        resize_height = (int)Math.Round(temp_bmp.Height / ratio1);
                     }
                     else
-                    { //taller than wide, shrink width
-                        wid = (float)resize_width * ratio;
-                        resize_width = (int)wid;
+                    {
+                        resize_width = (int)Math.Round(temp_bmp.Width / ratio2);
+                        resize_height = (int)Math.Round(temp_bmp.Height / ratio2);
                     }
+
                     //double check max and min, error proof it.
                     if (resize_width < 1) resize_width = 1;
                     if (resize_width > MAX_WIDTH) resize_width = MAX_WIDTH;
@@ -851,7 +923,13 @@ namespace RetroView
             if((has_loaded == 1) && (has_processed == 1))
             {
 
-                Rectangle cloneRect = new Rectangle(0, 0, orig_width, orig_height);
+                int max_out_width = out_size_x;
+                if (orig_width < out_size_x) max_out_width = orig_width;
+
+                int max_out_height = out_size_y;
+                if (orig_height < out_size_y) max_out_height = orig_height;
+
+                Rectangle cloneRect = new Rectangle(0, 0, max_out_width, max_out_height);
                 System.Drawing.Imaging.PixelFormat format = right_pic.PixelFormat;
                 Bitmap cloneBMP = right_pic.Clone(cloneRect, format);
                 
@@ -860,9 +938,9 @@ namespace RetroView
                 // save file
                 // export image pic of the current view
                 SaveFileDialog sfd = new SaveFileDialog();
-                //sfd.Filter = "Images|*.png;*.bmp;*.jpg;*.gif";
+                
                 sfd.Filter = "PNG|*.png|BMP|*.bmp|JPG|*.jpg|GIF|*.gif";
-                //ImageFormatConverter format = ImageFormatConverter.StandardValuesCollection;
+                
                 if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     string ext = System.IO.Path.GetExtension(sfd.FileName);
@@ -946,7 +1024,7 @@ namespace RetroView
             if (int.TryParse(str, out outvar))
             {
                 if (outvar > 100) outvar = 100;
-                if (outvar < 0) outvar = 0;
+                if (outvar < -100) outvar = -100;
                 contrast = outvar;
                 textBox20.Text = outvar.ToString();
             }
@@ -967,10 +1045,180 @@ namespace RetroView
             }
         }
 
+        private void floydSteinbergToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            floydSteinbergToolStripMenuItem.Checked = true;
+            orderedBayer8x8ToolStripMenuItem.Checked = false;
+            dither_style = FLOYD_STEIN;
+        }
+
+        private void orderedBayer8x8ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            floydSteinbergToolStripMenuItem.Checked = false;
+            orderedBayer8x8ToolStripMenuItem.Checked = true;
+            dither_style = BAYER8;
+        }
+
+        
+
         private void textBox21_Leave(object sender, EventArgs e)
         {
             dither_set();
         }
+
+        private void textBox22_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // out x size
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                tb22_set();
+
+                e.Handled = true; // prevent ding on return press
+            }
+        }
+
+        private void textBox22_Leave(object sender, EventArgs e)
+        {
+            // out x size
+            tb22_set();
+        }
+
+        private void tb22_set()
+        {
+            //out_size_x out_size_y
+            string str = textBox22.Text;
+            int outvar = 0;
+            if (int.TryParse(str, out outvar))
+            {
+                if (outvar > MAX_WIDTH) outvar = MAX_WIDTH;
+                if (outvar < 1) outvar = 1;
+                
+                textBox22.Text = outvar.ToString();
+
+                out_size_x = outvar;
+            }
+            else
+            {
+                // revert back to previous
+                textBox22.Text = out_size_x.ToString();
+            }
+
+        }
+
+        private void textBox23_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // out y size
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                tb23_set();
+
+                e.Handled = true; // prevent ding on return press
+            }
+        }
+
+        private void textBox23_Leave(object sender, EventArgs e)
+        {
+            // out y size
+            tb23_set();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //zoom functions
+            if (comboBox1.SelectedIndex == 0) zoom_factor = 1;
+            else if (comboBox1.SelectedIndex == 1) zoom_factor = 2;
+            else if (comboBox1.SelectedIndex == 2) zoom_factor = 4;
+            else if (comboBox1.SelectedIndex == 3) zoom_factor = 8;
+            else if (comboBox1.SelectedIndex == 4) zoom_factor = 16;
+            else zoom_factor = 1; // default
+
+            // todo, redraw screens
+            do_zoom();
+        }
+
+
+        public void do_zoom()
+        {
+            int clone_x, clone_y;
+
+            clone_x = 256 / zoom_factor;
+            clone_y = 240 / zoom_factor;
+            if (clone_x < 1) clone_x = 1;
+            if (clone_y < 1) clone_y = 1;
+
+            Rectangle cloneRect = new Rectangle(0, 0, clone_x, clone_y);
+            System.Drawing.Imaging.PixelFormat format = right_pic.PixelFormat;
+            Bitmap cloneBMP = left_pic.Clone(cloneRect, format);
+
+            using (Graphics g2 = Graphics.FromImage(zoom_left_pic))
+            {
+                g2.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g2.DrawImage(cloneBMP, 0, 0, 256, 240);
+            }
+
+            pictureBox1.Image = zoom_left_pic;
+            pictureBox1.Refresh();
+
+
+            // it was crashing here, cloning changed the size of
+            // the right_pic, so I made yet another
+            // bitmap and copied very slowly a full 256x240 pixels
+
+            Color TempColor = Color.Black;
+
+            for(int y = 0; y < 240; y++)
+            {
+                for (int x = 0; x < 256; x++)
+                {
+                    if((y< right_pic.Height) && (x < right_pic.Width))
+                    {
+                        TempColor = right_pic.GetPixel(x, y);
+                        dont_crash_pic.SetPixel(x, y, TempColor);
+                    }
+                    else
+                    {
+                        dont_crash_pic.SetPixel(x, y, Color.Gray);
+                    }
+                }
+            }
+
+
+            cloneBMP = dont_crash_pic.Clone(cloneRect, format); 
+
+
+            using (Graphics g2 = Graphics.FromImage(zoom_right_pic))
+            {
+                g2.InterpolationMode = InterpolationMode.NearestNeighbor;
+                g2.DrawImage(cloneBMP, 0, 0, 256, 240);
+            }
+
+            pictureBox2.Image = zoom_right_pic;
+            pictureBox2.Refresh();
+        }
+
+        
+
+        private void tb23_set()
+        {
+            string str = textBox23.Text;
+            int outvar = 0;
+            if (int.TryParse(str, out outvar))
+            {
+                if (outvar > MAX_HEIGHT) outvar = MAX_HEIGHT;
+                if (outvar < 1) outvar = 1;
+                
+                textBox23.Text = outvar.ToString();
+
+                out_size_y = outvar;
+            }
+            else
+            {
+                // revert back to previous
+                textBox23.Text = out_size_y.ToString();
+            }
+
+        }
+
 
         private void dither_set()
         {
@@ -996,6 +1244,7 @@ namespace RetroView
             Application.Exit();
         }
 
+        
 
         private void reset_values()
         {
@@ -1042,6 +1291,11 @@ namespace RetroView
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         { // reset
             reset_values();
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 240;
+            textBox23.Text = "240";
         }
 
         private void bitBWToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1054,6 +1308,12 @@ namespace RetroView
             textBox3.Text = "2";
             max_sat = 0;
             textBox14.Text = "0";
+            
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 240;
+            textBox23.Text = "240";
+            
         }
 
 
@@ -1067,6 +1327,11 @@ namespace RetroView
             textBox16.Text = "0";
             max_b = 0;
             textBox18.Text = "0";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 240;
+            textBox23.Text = "240";
         }
 
         private void bitRGBToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1079,19 +1344,30 @@ namespace RetroView
             textBox5.Text = "2";
             blue_lev = 2;
             textBox6.Text = "2";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 240;
+            textBox23.Text = "240";
         }
 
-        
+
+
         private void zXSpectrumToolStripMenuItem_Click(object sender, EventArgs e)
         {
             reset_values();
 
             hue_lev = 6;
             textBox1.Text = "6";
-            sat_lev = 3;
-            textBox2.Text = "3";
+            sat_lev = 2;
+            textBox2.Text = "2";
             light_lev = 2;
             textBox3.Text = "2";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 192;
+            textBox23.Text = "192";
         }
 
 
@@ -1110,8 +1386,13 @@ namespace RetroView
             textBox7.Text = "90";
             min_sat = 90;
             textBox8.Text = "90";
-            min_light = 20;
-            textBox9.Text = "20";
+            min_light = 10;
+            textBox9.Text = "10";
+
+            out_size_x = 160;
+            textBox22.Text = "160";
+            out_size_y = 144;
+            textBox23.Text = "144";
         }
 
         private void segaMasterToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1124,6 +1405,11 @@ namespace RetroView
             textBox5.Text = "4";
             blue_lev = 4;
             textBox6.Text = "4";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 192;
+            textBox23.Text = "192";
         }
 
         private void nESToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1132,13 +1418,15 @@ namespace RetroView
 
             hue_lev = 12;
             textBox1.Text = "12";
-            sat_lev = 3;
-            textBox2.Text = "3";
+            sat_lev = 2;
+            textBox2.Text = "2";
             light_lev = 6;
             textBox3.Text = "6";
 
-            min_sat = 10;
-            textBox8.Text = "10";
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 240;
+            textBox23.Text = "240";
         }
 
         /*private void atari7800ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1163,6 +1451,11 @@ namespace RetroView
             textBox5.Text = "8";
             blue_lev = 8;
             textBox6.Text = "8";
+
+            out_size_x = 256; // NOTE should be 320, but I'd have to change a lot
+            textBox22.Text = "256";
+            out_size_y = 224;
+            textBox23.Text = "224";
         }
 
         private void gameGearToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1175,7 +1468,32 @@ namespace RetroView
             textBox5.Text = "16";
             blue_lev = 16;
             textBox6.Text = "16";
+
+            out_size_x = 160;
+            textBox22.Text = "160";
+            out_size_y = 144;
+            textBox23.Text = "144";
         }
+
+
+        private void gameboyColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            reset_values();
+
+            red_lev = 32;
+            textBox4.Text = "32";
+            green_lev = 32;
+            textBox5.Text = "32";
+            blue_lev = 32;
+            textBox6.Text = "32";
+
+            out_size_x = 160;
+            textBox22.Text = "160";
+            out_size_y = 144;
+            textBox23.Text = "144";
+            //same as SNES but smaller screen
+        }
+
 
         private void sNESToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1187,6 +1505,11 @@ namespace RetroView
             textBox5.Text = "32";
             blue_lev = 32;
             textBox6.Text = "32";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 224;
+            textBox23.Text = "224";
         }
 
         private void sNESDirectColorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1206,18 +1529,86 @@ namespace RetroView
             textBox17.Text = "247";
             max_b = 231;
             textBox18.Text = "231";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 224;
+            textBox23.Text = "224";
         }
 
 
+        private void sepiaToneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            reset_values();
+
+            hue_lev = 1;
+            textBox1.Text = "1";
+            min_hue = 25;
+            textBox7.Text = "25";
+            min_sat = 10;
+            textBox8.Text = "10";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 240;
+            textBox23.Text = "240";
+        }
+
+        private void artSketchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            reset_values();
+
+            hue_lev = 4;
+            textBox1.Text = "4";
+            sat_lev = 5;
+            textBox2.Text = "5";
+            max_sat = 50;
+            textBox14.Text = "50";
+            light_lev = 4;
+            textBox3.Text = "4";
+            min_light = 10;
+            textBox9.Text = "10";
+            max_light = 90;
+            textBox15.Text = "90";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 240;
+            textBox23.Text = "240";
+        }
+
+        private void prettyInPinkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            reset_values();
+
+            hue_lev = 1;
+            textBox1.Text = "1";
+            min_hue = 330;
+            textBox7.Text = "330";
+            sat_lev = 3;
+            textBox2.Text = "3";
+            min_sat = 10;
+            textBox8.Text = "10";
+            max_sat = 80;
+            textBox14.Text = "80";
+
+            out_size_x = 256;
+            textBox22.Text = "256";
+            out_size_y = 240;
+            textBox23.Text = "240";
+        }
 
 
+        private void levelsChartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Levels Chart\n1=always min\n2=1 bit\n4=2 bit\n8=3 bit\n16=4 bit\n32=5 bit\n64=6 bit\n128=7 bit\n256=8 bit");
 
-
+        }
 
 
         private void aboutToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            MessageBox.Show("RetroView\nby Doug Fraker, 2020.\nPosterize Color to reduce bit depth. \n\nVersion 1.0");
+            MessageBox.Show("RetroView\nby Doug Fraker, 2020.\nPosterize Color to reduce bit depth. \n\nVersion 1.1");
 
         }
 

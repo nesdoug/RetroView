@@ -7,3 +7,13 @@ C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.Properties
 C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.csproj.GenerateResource.cache
 C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.exe
 C:\Users\dougf\source\repos\RetroView\RetroView\obj\Release\RetroView.pdb
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\bin\Release\RetroView.exe.config
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\bin\Release\RetroView.exe
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\bin\Release\RetroView.pdb
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\obj\Release\RetroView.csprojAssemblyReference.cache
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\obj\Release\RetroView.Form1.resources
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\obj\Release\RetroView.Properties.Resources.resources
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\obj\Release\RetroView.csproj.GenerateResource.cache
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\obj\Release\RetroView.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\obj\Release\RetroView.exe
+C:\Users\User\Desktop\Dad\VS Projects\RetroView\RetroView\obj\Release\RetroView.pdb
